@@ -45,12 +45,10 @@
         left: 10%;
         width: 80%;
         cursor: pointer;
+        z-index: 20;
     }
 
-    /* Calculated hotspot positions (converted to percentages) */
-    #dateSpot  { top: calc(1484px * 0.305); height: 40px; }
-    #timeSpot  { top: calc(1484px * 0.355); height: 40px; }
-    #hijriSpot { top: calc(1484px * 0.405); height: 40px; }
+    /* Only Venue + RSVP hotspots */
     #venueSpot { top: calc(1484px * 0.485); height: 120px; }
     #rsvpSpot  { top: calc(1484px * 0.615); height: 45px; }
 </style>
@@ -65,10 +63,6 @@
 </div>
 
 <!-- CLICKABLE HOTSPOTS -->
-<a id="dateSpot" class="hotspot" href="#countdown"></a>
-<a id="timeSpot" class="hotspot" href="#countdown"></a>
-<a id="hijriSpot" class="hotspot" href="#hijri"></a>
-
 <a id="venueSpot" class="hotspot" 
    href="https://maps.app.goo.gl/2NRmXtThpHPEpaSR6" 
    target="_blank"></a>
@@ -113,4 +107,9 @@ fetch("https://api.aladhan.com/v1/gToH")
             `Today's Hijri Date: ${hijri.day} ${hijri.month.en} ${hijri.year}`;
     })
     .catch(() => {
-        document.getElementById("
+        document.getElementById("hijri").innerHTML = "Hijri date unavailable";
+    });
+</script>
+
+</body>
+</html>
