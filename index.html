@@ -5,100 +5,118 @@
 <title>Shitabi Majlis Invitation</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Auto-refresh / No cache -->
+<!-- No cache -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 
 <style>
-    body {
-        margin: 0;
-        padding: 0;
-        background: #fff;
-        font-family: "Segoe UI", sans-serif;
-        overflow-x: hidden;
-    }
+  body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    font-family: "Segoe UI", sans-serif;
+    overflow-x: hidden;
+  }
 
-    /* Top countdown box */
-    .top-overlay {
-        position: fixed;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(255, 255, 255, 0.9);
-        padding: 10px 16px;
-        border-radius: 10px;
-        width: 85%;
-        max-width: 360px;
-        text-align: center;
-        font-size: 16px;
-        z-index: 20;
-    }
+  /* Top countdown box */
+  .top-overlay {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 16px;
+    border-radius: 10px;
+    width: 85%;
+    max-width: 360px;
+    text-align: center;
+    font-size: 16px;
+    z-index: 20;
+  }
 
-    /* Card container */
-    .card-container {
-        position: relative;
-        width: 100%;
-        max-width: 600px;
-        margin: 0 auto;
-    }
+  /* Card container */
+  .card-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 70px auto 0; /* leave space for countdown */
+  }
 
-    .card-container img {
-        width: 100%;
-        height: auto;
-        display: block;
-    }
+  .card-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
 
-    /* Hotspots inside the image */
-    .hotspot {
-        position: absolute;
-        left: 10%;
-        width: 80%;
-        cursor: pointer;
-        z-index: 10;
-    }
+  /* Hotspots inside the image */
+  .hotspot {
+    position: absolute;
+    left: 10%;
+    width: 80%;
+    cursor: pointer;
+    z-index: 10;
+  }
 
-    /* Percentage positions based on 1484px height */
-    #venueSpot { top: 48.5%; height: 12%; }
-    #rsvpSpot  { top: 61.5%; height: 5%; }
+  /* Approximate positions – tweak top % if needed */
+  /* Venue block */
+  #venueSpot {
+    top: 52%;   /* move up/down if needed */
+    height: 12%;
+  }
+
+  /* RSVP – WhatsApp */
+  #rsvpWhatsApp {
+    top: 66%;   /* move up/down if needed */
+    height: 5%;
+  }
+
+  /* RSVP – Call (slightly below WhatsApp) */
+  #rsvpCall {
+    top: 71%;   /* move up/down if needed */
+    height: 5%;
+  }
 </style>
 </head>
 
 <body>
 
-<!-- COUNTDOWN AT TOP -->
+<!-- COUNTDOWN + HIJRI -->
 <div class="top-overlay">
-    <div id="countdown">Loading countdown…</div>
-    <div id="hijri">Fetching Hijri date…</div>
+  <div id="countdown">Loading countdown…</div>
+  <div id="hijri">Fetching Hijri date…</div>
 </div>
 
-<!-- CARD IMAGE + HOTSPOTS -->
+<!-- CARD + HOTSPOTS -->
 <div class="card-container">
-    <img src="shitabi-invite.jpeg" alt="Invitation Card">
+  <img src="shitabi-invite.jpeg" alt="Invitation Card">
 
-    <!-- CLICKABLE HOTSPOTS -->
-    <a id="venueSpot" class="hotspot"
-       href="https://maps.app.goo.gl/2NRmXtThpHPEpaSR6"
-       target="_blank"></a>
+  <!-- Venue → Google Maps -->
+  <a id="venueSpot" class="hotspot"
+     href="https://maps.app.goo.gl/2NRmXtThpHPEpaSR6"
+     target="_blank"></a>
 
-    <a id="rsvpSpot" class="hotspot"
-       href="https://wa.me/919324760035"
-       target="_blank"></a>
+  <!-- RSVP → WhatsApp -->
+  <a id="rsvpWhatsApp" class="hotspot"
+     href="https://wa.me/919324760035"
+     target="_blank"></a>
+
+  <!-- RSVP → Call -->
+  <a id="rsvpCall" class="hotspot"
+     href="tel:+919324760035"></a>
 </div>
 
 <script>
-// ----------------------
-// LIVE COUNTDOWN
-// ----------------------
-const eventDate = new Date("July 11, 2026 17:30:00").getTime();
+  // COUNTDOWN
+  const eventDate = new Date("July 11, 2026 17:30:00").getTime();
 
-setInterval(() => {
+  setInterval(() => {
     const now = new Date().getTime();
     const diff = eventDate - now;
 
     if (diff <= 0) {
-        document.getElementById("countdown").innerHTML = "The event has started";
-        return;
+      document.getElementById("countdown").innerHTML = "The event has started";
+      return;
     }
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -106,22 +124,19 @@ setInterval(() => {
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
     document.getElementById("countdown").innerHTML =
-        `${days} days, ${hours} hours, ${minutes} minutes to go`;
-}, 1000);
+      `${days} days, ${hours} hours, ${minutes} minutes to go`;
+  }, 1000);
 
-
-// ----------------------
-// LIVE HIJRI DATE
-// ----------------------
-fetch("https://api.aladhan.com/v1/gToH")
+  // HIJRI DATE
+  fetch("https://api.aladhan.com/v1/gToH")
     .then(res => res.json())
     .then(data => {
-        const hijri = data.data.hijri;
-        document.getElementById("hijri").innerHTML =
-            `Today's Hijri Date: ${hijri.day} ${hijri.month.en} ${hijri.year}`;
+      const hijri = data.data.hijri;
+      document.getElementById("hijri").innerHTML =
+        `Today's Hijri Date: ${hijri.day} ${hijri.month.en} ${hijri.year}`;
     })
     .catch(() => {
-        document.getElementById("hijri").innerHTML = "Hijri date unavailable";
+      document.getElementById("hijri").innerHTML = "Hijri date unavailable";
     });
 </script>
 
