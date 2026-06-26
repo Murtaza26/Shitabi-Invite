@@ -1,1 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Shitabi Majlis Invitation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: url('shitabi-invite.jpeg') no-repeat center center fixed;
+        background-size: cover;
+        font-family: "Segoe UI", sans-serif;
+        color: #333;
+        text-align: center;
+    }
+
+    .overlay {
+        background: rgba(255, 255, 255, 0.65);
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 420px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    h2 {
+        margin-top: 0;
+        font-weight: 600;
+    }
+
+    .btn {
+        display: block;
+        margin: 12px auto;
+        padding: 12px 18px;
+        background: #ff8c42;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 16px;
+        width: 80%;
+        max-width: 260px;
+    }
+
+    .btn:hover {
+        background: #e6762f;
+    }
+
+    .small {
+        font-size: 14px;
+        margin-top: 8px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="overlay">
+    <h2>Shitabi Majlis</h2>
+
+    <div id="countdown">Loading countdown…</div>
+    <div class="small" id="hijri">Fetching Hijri date…</div>
+
+    <a class="btn" href="https://www.google.com/maps?q=Hashimi+Markaz+Evan-E-Mufaddal+Pearl+Hall+Mumbai+Central" target="_blank">
+        Open in Google Maps
+    </a>
+
+    <a class="btn" href="https://wa.me/9324760035" target="_blank">
+        WhatsApp RSVP
+    </a>
+
+    <a class="btn" href="tel:9324760035">
+        Call RSVP
+    </a>
+</div>
+
+<script>
+// ----------------------
+// LIVE COUNTDOWN
+// ----------------------
+const eventDate = new Date("July 11, 2026 17:30:00").getTime();
+
+setInterval(() => {
+    const now = new Date().getTime();
+    const diff = eventDate - now;
+
+    if (diff <= 0) {
+        document.getElementById("countdown").innerHTML = "The event has started";
+        return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+    document.getElementById("countdown").innerHTML =
+        `<strong>${days}</strong> days, <strong>${hours}</strong> hours, <strong>${minutes}</strong> minutes to go`;
+}, 1000);
+
+
+// ----------------------
+// LIVE HIJRI DATE
+// ----------------------
+fetch("https://api.aladhan.com/v1/gToH")
+    .then(res => res.json())
+    .then(data => {
+        const hijri = data.data.hijri;
+        document.getElementById("hijri").innerHTML =
+            `Today's Hijri Date: ${hijri.day} ${hijri.month.en} ${hijri.year}`;
+    })
+    .catch(() => {
+        document.getElementById("hijri").innerHTML = "Hijri date unavailable";
+    });
+</script>
+
+</body>
+</html>
