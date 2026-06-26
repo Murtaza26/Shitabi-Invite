@@ -12,36 +12,34 @@
         background: url('shitabi-invite.jpeg') no-repeat top center;
         background-size: contain;
         background-color: #fff;
-        background-attachment: scroll;
         font-family: "Segoe UI", sans-serif;
-        color: #333;
-        min-height: 100vh;
+        height: 100vh;
         position: relative;
+        overflow-x: hidden;
     }
 
-    /* Invisible clickable hotspots */
+    /* Hotspots sized & positioned based on your actual card */
     .hotspot {
         position: absolute;
-        width: 80%;
         left: 10%;
-        height: 40px;
+        width: 80%;
         cursor: pointer;
     }
 
-    /* Adjust these positions to match your card layout */
-    #dateSpot { top: 350px; }
-    #timeSpot { top: 400px; }
-    #hijriSpot { top: 450px; }
-    #venueSpot { top: 520px; height: 80px; }
-    #rsvpSpot { top: 640px; }
+    /* These positions are based on your uploaded image */
+    #dateSpot { top: 355px; height: 35px; }
+    #timeSpot { top: 405px; height: 35px; }
+    #hijriSpot { top: 455px; height: 35px; }
+    #venueSpot { top: 520px; height: 95px; }
+    #rsvpSpot { top: 650px; height: 40px; }
 
-    /* Countdown + Hijri overlay box */
+    /* Live info overlay */
     .overlay {
         position: absolute;
         bottom: 20px;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(255, 255, 255, 0.75);
+        background: rgba(255, 255, 255, 0.8);
         padding: 12px 18px;
         border-radius: 10px;
         width: 85%;
@@ -55,16 +53,16 @@
 
 <!-- CLICKABLE HOTSPOTS -->
 <a id="dateSpot" class="hotspot" href="#countdown"></a>
-
 <a id="timeSpot" class="hotspot" href="#countdown"></a>
-
 <a id="hijriSpot" class="hotspot" href="#hijri"></a>
 
 <a id="venueSpot" class="hotspot" 
    href="https://maps.app.goo.gl/2NRmXtThpHPEpaSR6" 
    target="_blank"></a>
 
-<a id="rsvpSpot" class="hotspot" href="https://wa.me/919324760035" target="_blank"></a>
+<a id="rsvpSpot" class="hotspot" 
+   href="https://wa.me/919324760035" 
+   target="_blank"></a>
 
 
 <!-- LIVE INFO OVERLAY -->
