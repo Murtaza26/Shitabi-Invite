@@ -9,73 +9,68 @@
     body {
         margin: 0;
         padding: 0;
-        background: url('shitabi-invite.jpeg') no-repeat center center fixed;
+        background: url('shitabi-invite.jpeg') no-repeat top center;
         background-size: cover;
         font-family: "Segoe UI", sans-serif;
         color: #333;
-        text-align: center;
+        height: 100vh;
+        position: relative;
     }
 
-    .overlay {
-        background: rgba(255, 255, 255, 0.65);
-        padding: 20px;
-        margin-top: 20px;
-        border-radius: 12px;
-        width: 90%;
-        max-width: 420px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    h2 {
-        margin-top: 0;
-        font-weight: 600;
-    }
-
-    .btn {
-        display: block;
-        margin: 12px auto;
-        padding: 12px 18px;
-        background: #ff8c42;
-        color: white;
-        text-decoration: none;
-        border-radius: 8px;
-        font-size: 16px;
+    /* Invisible clickable hotspots */
+    .hotspot {
+        position: absolute;
         width: 80%;
-        max-width: 260px;
+        left: 10%;
+        height: 40px;
+        cursor: pointer;
     }
 
-    .btn:hover {
-        background: #e6762f;
-    }
+    /* Adjust these positions to match your card layout */
+    #dateSpot { top: 350px; }
+    #timeSpot { top: 400px; }
+    #hijriSpot { top: 450px; }
+    #venueSpot { top: 520px; height: 80px; }
+    #rsvpSpot { top: 640px; }
 
-    .small {
-        font-size: 14px;
-        margin-top: 8px;
+    /* Countdown + Hijri overlay box */
+    .overlay {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.75);
+        padding: 12px 18px;
+        border-radius: 10px;
+        width: 85%;
+        max-width: 360px;
+        text-align: center;
     }
 </style>
 </head>
 
 <body>
 
+<!-- CLICKABLE HOTSPOTS -->
+<a id="dateSpot" class="hotspot" href="#countdown"></a>
+
+<a id="timeSpot" class="hotspot" href="#countdown"></a>
+
+<a id="hijriSpot" class="hotspot" href="#hijri"></a>
+
+<a id="venueSpot" class="hotspot" 
+   href="https://maps.app.goo.gl/2NRmXtThpHPEpaSR6" 
+   target="_blank"></a>
+
+<a id="rsvpSpot" class="hotspot" href="https://wa.me/919324760035" target="_blank"></a>
+
+
+<!-- LIVE INFO OVERLAY -->
 <div class="overlay">
-    <h2>Shitabi Majlis</h2>
-
     <div id="countdown">Loading countdown…</div>
-    <div class="small" id="hijri">Fetching Hijri date…</div>
-
-    <a class="btn" href="https://maps.app.goo.gl/2NRmXtThpHPEpaSR6" target="_blank">
-        Open in Google Maps
-    </a>
-
-    <a class="btn" href="https://wa.me/+919324760035" target="_blank">
-        WhatsApp RSVP
-    </a>
-
-    <a class="btn" href="tel:+919324760035">
-        Call RSVP
-    </a>
+    <div id="hijri" style="margin-top:6px;">Fetching Hijri date…</div>
 </div>
+
 
 <script>
 // ----------------------
@@ -97,7 +92,7 @@ setInterval(() => {
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
     document.getElementById("countdown").innerHTML =
-        `<strong>${days}</strong> days, <strong>${hours}</strong> hours, <strong>${minutes}</strong> minutes to go`;
+        `${days} days, ${hours} hours, ${minutes} minutes to go`;
 }, 1000);
 
 
