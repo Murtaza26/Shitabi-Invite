@@ -14,131 +14,120 @@
   body {
     margin: 0;
     padding: 0;
-    background: #fff;
+    background: #fdfbf7;
     font-family: "Segoe UI", sans-serif;
-    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
-  /* Top countdown box */
+  /* Fixed countdown header at the very top */
   .top-overlay {
     position: fixed;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.9);
-    padding: 10px 16px;
-    border-radius: 10px;
-    width: 85%;
-    max-width: 360px;
-    text-align: center;
-    font-size: 16px;
-    z-index: 20;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    font-weight: 600;
+    color: #d27d56;
   }
 
-  /* Card container */
+  /* Main wrapper containing the card and interactive layer */
   .card-container {
     position: relative;
     width: 100%;
-    max-width: 600px;
-    margin: 70px auto 0; /* leave space for countdown */
+    max-width: 500px; /* Perfect scanning width for mobile screens */
+    margin-top: 75px; /* Pushes content below fixed header */
+    margin-bottom: 20px;
   }
 
+  /* The background invitation image */
   .card-container img {
     width: 100%;
     height: auto;
     display: block;
   }
 
-  /* Hotspots inside the image */
-  .hotspot {
+  /* Absolute overlay mapping clickable areas precisely */
+  .svg-overlay {
     position: absolute;
-    left: 10%;
-    width: 80%;
-    cursor: pointer;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 10;
   }
 
-  /* Approximate positions – tweak top % if needed */
-  /* Venue block */
-  #venueSpot {
-    top: 52%;   /* move up/down if needed */
-    height: 12%;
-  }
-
-  /* RSVP – WhatsApp */
-  #rsvpWhatsApp {
-    top: 66%;   /* move up/down if needed */
-    height: 5%;
-  }
-
-  /* RSVP – Call (slightly below WhatsApp) */
-  #rsvpCall {
-    top: 71%;   /* move up/down if needed */
-    height: 5%;
+  /* Style invisible clickable vectors */
+  .hotspot {
+    fill: transparent;
+    cursor: pointer;
+    outline: none;
+    -webkit-tap-highlight-color: rgba(210, 125, 86, 0.3); /* Tap feedback color */
   }
 </style>
 </head>
-
 <body>
 
-<!-- COUNTDOWN + HIJRI -->
-<div class="top-overlay">
-  <div id="countdown">Loading countdown…</div>
-  <div id="hijri">Fetching Hijri date…</div>
-</div>
+  <!-- Countdown Top Section -->
+  <div class="top-overlay" id="countdown-box">
+    <!-- Countdown text automatically populates here -->
+    Loading Countdown...
+  </div>
 
-<!-- CARD + HOTSPOTS -->
-<div class="card-container">
-  <img src="shitabi-invite.jpeg" alt="Invitation Card">
+  <!-- Card Container Section -->
+  <div class="card-container">
+    <!-- Your invitation image asset -->
+    <img src="your-image-filename.jpg" alt="Shitabi Majlis Invitation">
 
-  <!-- Venue → Google Maps -->
-  <a id="venueSpot" class="hotspot"
-     href="https://maps.app.goo.gl/2NRmXtThpHPEpaSR6"
-     target="_blank"></a>
+    <!-- Scalable SVG Coordinate Link Map -->
+    <svg class="svg-overlay" viewBox="0 0 710 1000" xmlns="http://w3.org">
+      
+      <!-- 1. DATE HOTSPOT (Maps over '11th July, Saturday') -->
+      <a href="https://google.com" target="_blank">
+        <rect x="150" y="540" width="220" height="80" class="hotspot" />
+      </a>
 
-  <!-- RSVP → WhatsApp -->
-  <a id="rsvpWhatsApp" class="hotspot"
-     href="https://wa.me/919324760035"
-     target="_blank"></a>
+      <!-- 2. ADDRESS / VENUE HOTSPOT (Maps over entire block of address text) -->
+      <a href="https://google.com" target="_blank">
+        <rect x="220" y="770" width="380" height="95" class="hotspot" />
+      </a>
 
-  <!-- RSVP → Call -->
-  <a id="rsvpCall" class="hotspot"
-     href="tel:+919324760035"></a>
-</div>
+      <!-- 3. RSVP HOTSPOT (Maps over Tasneem Kheriwala name and mobile number) -->
+      <a href="https://wa.me." target="_blank">
+        <rect x="220" y="880" width="400" height="45" class="hotspot" />
+      </a>
+      
+    </svg>
+  </div>
 
-<script>
-  // COUNTDOWN
-  const eventDate = new Date("July 11, 2026 17:30:00").getTime();
-
-  setInterval(() => {
-    const now = new Date().getTime();
-    const diff = eventDate - now;
-
-    if (diff <= 0) {
-      document.getElementById("countdown").innerHTML = "The event has started";
-      return;
-    }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-
-    document.getElementById("countdown").innerHTML =
-      `${days} days, ${hours} hours, ${minutes} minutes to go`;
-  }, 1000);
-
-  // HIJRI DATE
-  fetch("https://api.aladhan.com/v1/gToH")
-    .then(res => res.json())
-    .then(data => {
-      const hijri = data.data.hijri;
-      document.getElementById("hijri").innerHTML =
-        `Today's Hijri Date: ${hijri.day} ${hijri.month.en} ${hijri.year}`;
-    })
-    .catch(() => {
-      document.getElementById("hijri").innerHTML = "Hijri date unavailable";
-    });
-</script>
+  <!-- Optional simple dynamic countdown timer script -->
+  <script>
+    const targetDate = new Date("July 11, 2026 17:30:00").getTime();
+    
+    setInterval(function() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+      
+      if (distance < 0) {
+        document.getElementById("countdown-box").innerHTML = "The Event Has Started";
+        return;
+      }
+      
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      
+      document.getElementById("countdown-box").innerHTML = `⏳ ${days}d ${hours}h ${minutes}m Remaining`;
+    }, 1000);
+  </script>
 
 </body>
 </html>
