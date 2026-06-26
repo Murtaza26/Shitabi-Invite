@@ -5,6 +5,11 @@
 <title>Shitabi Majlis Invitation</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Auto-refresh / No cache -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
 <style>
     body {
         margin: 0;
@@ -18,7 +23,23 @@
         overflow-x: hidden;
     }
 
-    /* Hotspots sized & positioned based on your actual card */
+    /* Top countdown box */
+    .top-overlay {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.85);
+        padding: 10px 16px;
+        border-radius: 10px;
+        width: 85%;
+        max-width: 360px;
+        text-align: center;
+        font-size: 16px;
+        z-index: 10;
+    }
+
+    /* Hotspots (absolute, based on 1484px height) */
     .hotspot {
         position: absolute;
         left: 10%;
@@ -26,30 +47,22 @@
         cursor: pointer;
     }
 
-    /* These positions are based on your uploaded image */
-    #dateSpot { top: 355px; height: 35px; }
-    #timeSpot { top: 405px; height: 35px; }
-    #hijriSpot { top: 455px; height: 35px; }
-    #venueSpot { top: 520px; height: 95px; }
-    #rsvpSpot { top: 650px; height: 40px; }
-
-    /* Live info overlay */
-    .overlay {
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(255, 255, 255, 0.8);
-        padding: 12px 18px;
-        border-radius: 10px;
-        width: 85%;
-        max-width: 360px;
-        text-align: center;
-    }
+    /* Calculated hotspot positions (converted to percentages) */
+    #dateSpot  { top: calc(1484px * 0.305); height: 40px; }
+    #timeSpot  { top: calc(1484px * 0.355); height: 40px; }
+    #hijriSpot { top: calc(1484px * 0.405); height: 40px; }
+    #venueSpot { top: calc(1484px * 0.485); height: 120px; }
+    #rsvpSpot  { top: calc(1484px * 0.615); height: 45px; }
 </style>
 </head>
 
 <body>
+
+<!-- COUNTDOWN AT TOP -->
+<div class="top-overlay">
+    <div id="countdown">Loading countdown…</div>
+    <div id="hijri">Fetching Hijri date…</div>
+</div>
 
 <!-- CLICKABLE HOTSPOTS -->
 <a id="dateSpot" class="hotspot" href="#countdown"></a>
@@ -63,13 +76,6 @@
 <a id="rsvpSpot" class="hotspot" 
    href="https://wa.me/919324760035" 
    target="_blank"></a>
-
-
-<!-- LIVE INFO OVERLAY -->
-<div class="overlay">
-    <div id="countdown">Loading countdown…</div>
-    <div id="hijri" style="margin-top:6px;">Fetching Hijri date…</div>
-</div>
 
 
 <script>
@@ -107,9 +113,4 @@ fetch("https://api.aladhan.com/v1/gToH")
             `Today's Hijri Date: ${hijri.day} ${hijri.month.en} ${hijri.year}`;
     })
     .catch(() => {
-        document.getElementById("hijri").innerHTML = "Hijri date unavailable";
-    });
-</script>
-
-</body>
-</html>
+        document.getElementById("
